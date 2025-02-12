@@ -7,15 +7,26 @@ class SpeechRecognizer {
         
         // Check if speech recognition is available
         if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
-            console.error('Speech recognition not supported');
+            console.error('Speech recognition not supported in this browser');
             return;
         }
+        
+        // Log which version we're using
+        console.log('Using webkitSpeechRecognition:', 'webkitSpeechRecognition' in window);
+        console.log('Using SpeechRecognition:', 'SpeechRecognition' in window);
         
         try {
             this.recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             this.recognition.lang = "en-US";
             this.recognition.continuous = true;
             this.recognition.interimResults = true;
+            
+            // Add more detailed error logging
+            this.recognition.onerror = (event) => {
+                console.error("Speech recognition error:", event.error);
+                console.error("Error details:", event);
+            };
+            
             this.setupRecognitionHandlers();
             this.setupMicrophone();
         } catch (error) {
