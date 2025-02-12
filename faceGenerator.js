@@ -50,29 +50,39 @@ class FaceGenerator {
 
     setupAudio(audioData, visemes, onlyAudio, resolve, reject) {
         try {
-            const blob = new Blob([new Uint8Array(audioData)], { type: "audio/wav" });
-            _audio = new Audio(URL.createObjectURL(blob));
-			_audio.muted = false; // Ensure not muted
-
-            _audio.onended = () => {
-                this.cleanup();
-                resolve();
-            };
-            _audio.onerror = reject;
-            _audio.onplay = () => {
-                if (!onlyAudio) this.playVisemes(visemes);
-            };
-
-            _audio.play().catch(err => {
-				// Handle any errors (e.g., show a play button)
-				console.error("Audio play failed:", err);
-				reject(err);
+			if (!window.audioContext) {
+				window.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+			}
+		 
+			// Convert audio data to AudioBuffer
+			audioContext.decodeAudioData(audioData, (audioBuffer) => {
+				const source = audioContext.createBufferSource();
+				source.buffer = audioBuffer;
+				source.connect(audioContext.destination);
+				
+				// Handle completion
+				source.onended = () => {
+					this.cleanup();
+					resolve();
+				};
+		 
+				// Start playing and handle visemes
+				source.start(0);
+				if (!onlyAudio) {
+					this.playVisemes(visemes);
+				}
+		 
+			}, (error) => {
+				console.error("Error decoding audio data:", error);
+				reject(error);
+				this.cleanup();
 			});
-        } catch (error) {
-            this.cleanup();
-            reject(error);
-        }
-    }
+		 
+		 } catch (error) {
+			console.error("Audio context setup failed:", error);
+			this.cleanup();
+			reject(error);
+		 }
 
     playVisemes(visemes) {
         visemes.forEach(([visemeId, duration], index) => {
