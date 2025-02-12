@@ -3,12 +3,6 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-
-		<link rel="manifest" href="./manifest.json">
-    	<!-- <link rel="icon" type="image/png" sizes="196x196" href="./Icon-196.png">
-    	<link rel="icon" type="image/png" sizes="512x512" href="./Icon-512.png">
-    	<link rel="apple-touch-icon" href="./Icon-196.png"> -->
-
 		<title>TLBTC</title>
 		<style>
 html, body, #canvas {
@@ -105,7 +99,7 @@ body {
 
 		<script src="godot_game.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"godot_game","experimentalVK":false,"fileSizes":{"godot_game.pck":37411520,"godot_game.wasm":1619701},"focusCanvas":true,"gdextensionLibs":[]};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"godot_game","experimentalVK":false,"fileSizes":{"godot_game.pck":37412000,"godot_game.wasm":1619701},"focusCanvas":true,"gdextensionLibs":[]};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
@@ -201,20 +195,6 @@ const engine = new Engine(GODOT_CONFIG);
 		}, displayFailureNotice);
 	}
 }());
-		</script>
-
-		<script>
-			if ('serviceWorker' in navigator) {
-				window.addEventListener('load', () => {
-					navigator.serviceWorker.register('./service-worker.js')
-						.then(registration => {
-							console.log('ServiceWorker registration successful');
-						})
-						.catch(err => {
-							console.log('ServiceWorker registration failed: ', err);
-						});
-				});
-			}
 		</script>
 	</body>
 </html>
