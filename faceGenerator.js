@@ -52,6 +52,7 @@ class FaceGenerator {
         try {
             const blob = new Blob([new Uint8Array(audioData)], { type: "audio/wav" });
             _audio = new Audio(URL.createObjectURL(blob));
+			_audio.muted = false; // Ensure not muted
 
             _audio.onended = () => {
                 this.cleanup();
@@ -62,7 +63,11 @@ class FaceGenerator {
                 if (!onlyAudio) this.playVisemes(visemes);
             };
 
-            _audio.play();
+            _audio.play().catch(err => {
+				// Handle any errors (e.g., show a play button)
+				console.error("Audio play failed:", err);
+				reject(err);
+			});
         } catch (error) {
             this.cleanup();
             reject(error);
