@@ -42,7 +42,7 @@ class SpeechRecognizer {
         this.recognition.onend = () => {
             console.log("Speech recognition ended");
             
-            if (_recognitionStopped = false)
+            if (_recognitionStopped === false)
                 this.recognition.start();
         };
 
