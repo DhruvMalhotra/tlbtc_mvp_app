@@ -4,13 +4,23 @@ let _recognitionStopped = true;
 class SpeechRecognizer {
     constructor() {
         this.recognizedText = "";
-        this.recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        this.recognition.lang = "en-US";
-        this.recognition.continuous = true;
-        this.recognition.interimResults = true;
-
-        this.setupRecognitionHandlers();
-		this.setupMicrophone();
+        
+        // Check if speech recognition is available
+        if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
+            console.error('Speech recognition not supported');
+            return;
+        }
+        
+        try {
+            this.recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            this.recognition.lang = "en-US";
+            this.recognition.continuous = true;
+            this.recognition.interimResults = true;
+            this.setupRecognitionHandlers();
+            this.setupMicrophone();
+        } catch (error) {
+            console.error('Error initializing speech recognition:', error);
+        }
     }
 
     async setupMicrophone() {
